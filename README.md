@@ -1,0 +1,2 @@
+# avscan
+Simple clamdscan script
