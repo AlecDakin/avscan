@@ -8,15 +8,13 @@
 RESULT="$( nice -n 19 clamdscan --fdpass -m /home /storage | grep Infected )"
 INFECTED="$( echo $RESULT | grep -v 0 | wc -l )"
 
-# Only email if there is a problem 
+# Only email if there is a problem
 # but always send a telegram
-# telegram-send will need to be installed
-telegram-send -g --pre "AV Scan complete - $RESULT"
+telegram-send -g --pre "$(hostname) AV Scan complete - $RESULT"
 if [ "$INFECTED" -ne 0 ]; then
-  # Edit email's as needed, requires SSMTP
-  echo -e "AV Scan complete - $RESULT" | mail -s "$hostname AV Scan result" <email1@address.com> <email2@address.com>
+  echo -e "AV Scan complete - $RESULT" | mail -s "$hostname AV Scan result" support@dynacomitsupport.co.uk mrabee@laltexlondon.com
   logger "AV Scan complete - $RESULT"
-  telegram-send -g -f /var/log/clamav/clamav.log
+  telegram-send -g "$(hostname)" -f /var/log/clamav/clamav.log
 fi
 
 ### EOF ###
